@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     public float moveSpeed;
-    private Vector2 direction = Vector2.zero;
+    Rigidbody2D rb;
+
+    public GameObject canvas;
+    [SerializeField]private GameObject winZone;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        canvas.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
-        rb.velocity = new Vector2(speedX, speedY);*/
+        float speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
+        float speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
+        rb.velocity = new Vector2(speedX, speedY);
 
-        direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") * moveSpeed);
-        
+        float winDistance = Vector2.Distance(transform.position, winZone.transform.position);
+        float winRadius = 2f;
+        if (winDistance <= winRadius)
+        {
+            canvas.SetActive(true);
+        }
     }
 }
